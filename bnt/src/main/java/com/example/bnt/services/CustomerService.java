@@ -23,10 +23,9 @@ public class CustomerService {
     }
 
     public List<CustomerModel> getCustomer() {
-       if(customerRepositiory.getCustomer().isEmpty())
-       {
-        throw new UnsupportedOperationException("Unimplemented method 'getCustomer'");
-       }
-       return customerRepositiory.getCustomer();
+        if (customerRepositiory.getCustomer().isEmpty()) {
+            throw new UnsupportedOperationException("Unimplemented method 'getCustomer'");
+        }
+        return customerRepositiory.getCustomer();
     }
 }
