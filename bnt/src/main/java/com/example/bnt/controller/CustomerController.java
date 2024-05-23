@@ -1,6 +1,7 @@
 package com.example.bnt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,11 +52,12 @@ public class CustomerController {
     }
 
     @DeleteMapping
-    public void deleteData(@RequestParam("id") int id) throws DataIsNotPresent {
+    public ResponseEntity<String> deleteData(@RequestParam("id") int id) throws DataIsNotPresent {
         if (!customerservice.getId().contains(id)) {
             throw new DataIsNotPresent("Data Is Not Present");
         }
         customerservice.deleteData(id);
+        return ResponseEntity.ok("Data Are Deleted with " + id);
 
     }
 
