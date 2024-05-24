@@ -1,5 +1,6 @@
 package com.example.bnt.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,12 @@ public class CustomerService {
             throw new DataIsNotPresent("Data Is Not Present");
         }
         customerRepositiory.deleteData(id);
+    }
+
+    public CustomerModel updateSal(int id, int sal) throws DataIsNotPresent, SQLException {
+        if (!customerRepositiory.getId().contains(id)) {
+            throw new DataIsNotPresent("The Id Is Not Present");
+        }
+        return customerRepositiory.updateSal(id, sal);
     }
 }

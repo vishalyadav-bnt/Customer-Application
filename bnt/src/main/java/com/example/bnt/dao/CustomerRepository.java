@@ -3,6 +3,7 @@ package com.example.bnt.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,5 +98,25 @@ public class CustomerRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public CustomerModel updateSal(int id, int sal) throws SQLException {
+        CustomerModel cust = new CustomerModel();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement("update customer set sal=? where id=?");
+                PreparedStatement statement = conn.prepareStatement("SELECT * FROM customer")) {
+            preparedStatement.setInt(1, sal);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                cust.setId(resultSet.getInt(1));
+                cust.setName(resultSet.getString(2));
+                cust.setSal(resultSet.getInt(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cust;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.example.bnt.exception.DataIsNotPresent;
 import com.example.bnt.exception.ObjectIsNull;
 import com.example.bnt.model.CustomerModel;
 import com.example.bnt.services.CustomerService;
+
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -62,4 +66,14 @@ public class CustomerController {
 
     }
 
+    @PatchMapping("/{id}")
+    public CustomerModel updateSal(@PathVariable("id")int id,@RequestParam("sal") int sal) throws DataIsNotPresent, SQLException {
+        if (!customerservice.getId().contains(id)) {
+            throw new DataIsNotPresent("The Data Is Not Present");
+        }
+        return customerservice.updateSal(id, sal);
+
+    }
+
 }
+ 
