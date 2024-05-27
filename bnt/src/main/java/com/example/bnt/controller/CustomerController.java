@@ -32,6 +32,7 @@ public class CustomerController {
     @PostMapping
     public CustomerModel saveCustomer(@RequestBody CustomerModel customer) throws ObjectIsNull {
         if (customer == null) {
+            System.out.println("bdjs");
             throw new ObjectIsNull("The Value of Object is Null");
         }
         return customerservice.saveCustomer(customer);
@@ -67,13 +68,13 @@ public class CustomerController {
     }
 
     @PatchMapping("/{id}")
-    public CustomerModel updateSal(@PathVariable("id")int id,@RequestParam("sal") int sal) throws DataIsNotPresent, SQLException {
-        if (!customerservice.getId().contains(id)) {
-            throw new DataIsNotPresent("The Data Is Not Present");
+    public CustomerModel updateSal(@PathVariable("id") int id, @RequestParam("sal") int sal)
+            throws DataIsNotPresent, SQLException {
+        List<Integer> customerIds = customerservice.getId();
+        if (!customerIds.contains(id)) {
+            throw new DataIsNotPresent("Customer with ID " + id + " is not present");
         }
         return customerservice.updateSal(id, sal);
-
     }
 
 }
- 

@@ -43,7 +43,7 @@ public class CustomerRepository {
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer");
                 ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
-                CustomerModel customer = new CustomerModel();
+                 CustomerModel customer = new CustomerModel();
                 customer.setId(rs.getInt(1));
                 customer.setName(rs.getString(2));
                 customer.setSal(rs.getInt(3));
@@ -71,7 +71,7 @@ public class CustomerRepository {
                 cust.setSal(rs.getInt(3));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error is"+e);
         }
         return cust;
     }
@@ -119,4 +119,5 @@ public class CustomerRepository {
         }
         return cust;
     }
+
 }

@@ -15,6 +15,7 @@ import com.example.bnt.model.CustomerModel;
 public class CustomerService {
 
     @Autowired
+    public
     CustomerRepository customerRepositiory;
 
     public CustomerModel saveCustomer(CustomerModel customer) throws ObjectIsNull {
