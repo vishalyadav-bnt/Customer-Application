@@ -81,17 +81,22 @@ public class CustomerRepoTest {
         List<CustomerModel> result = customerRepository.getCustomer();
         assertIterableEquals(expectedCustomers, result);
     }
-
     @Test
-    public void testGetCustomer_Negative_ResponseIsNull() {
+    public void testGetCustomer_Negative() throws SQLException
+    {
+     Connection connection=mock(Connection.class);
+     //ResultSet resultSet=mock(ResultSet.class);
+     PreparedStatement preparedStatement=mock(PreparedStatement.class);
+     when(dataSourceMock.getConnection()).thenReturn(connection);
+     when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+     when(preparedStatement.executeQuery()).thenThrow(SQLException.class);
+     assertThrows(SQLException.class,()->
+     {
+        customerRepository.getCustomer();
+     });
 
-        when(customerRepository.getCustomer()).thenThrow(SQLException.class);
 
-        assertThrows(NullPointerException.class, () -> {
-            customerRepository.getCustomer();
-        });
     }
-
     @Test
     public void testDeleteData() throws SQLException {
         int id = 1;
@@ -153,28 +158,28 @@ public class CustomerRepoTest {
 
     // @Test
     // public void testDataUpdate_Negative() throws SQLException {
-    // int id = 1;
-    // String name = "Dinesh";
+    //     int id = 1;
+    //     String name = "Dinesh";
 
-    // // Mocking the necessary components
-    // Connection connectionMock = mock(Connection.class);
-    // PreparedStatement preparedStatementMock = mock(PreparedStatement.class);
+    //     // Mocking the necessary components
+    //     Connection connectionMock = mock(Connection.class);
+    //     PreparedStatement preparedStatementMock = mock(PreparedStatement.class);
+    //     System.out.println(connectionMock.toString());
+    //     System.out.println();
+    //     // Setting up the mock interactions
+    //     when(dataSourceMock.getConnection()).thenReturn(connectionMock);
+    //     when(connectionMock.prepareStatement(anyString())).thenReturn(preparedStatementMock);
 
-    // // Setting up the mock interactions
-    // when(dataSourceMock.getConnection()).thenReturn(connectionMock);
-    // when(connectionMock.prepareStatement(anyString())).thenReturn(preparedStatementMock);
+    //     // Simulating a failure during the update operation
+    //     when(preparedStatementMock.executeUpdate()).thenThrow(new SQLException("Failed"));
 
-    // // Simulating a failure during the update operation
-    // when(preparedStatementMock.executeUpdate()).thenThrow(new
-    // SQLException("Failed"));
+    //     // Asserting that the method throws a SQLException with the expected error
 
-    // // Asserting that the method throws a SQLException with the expected error
-    // message
-    // SQLException exception = assertThrows(SQLException.class, () -> {
-    // customerRepository.updateData(id, name);
-    // });
-    // assertEquals("Failed", exception.getMessage()); // Adjusted the assertion to
-    // match the actual message
+    //     SQLException exception = assertThrows(SQLException.class, () -> {
+    //         customerRepository.updateData(id, name);
+    //     });
+    //     assertEquals("Failed", exception.getMessage()); // Adjusted the assertion to
+
     // }
 
     @Test

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerModel {
-    
-
     private int id;
     private String name;
     private int sal;

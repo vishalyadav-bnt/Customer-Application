@@ -1,4 +1,5 @@
 package com.example.bnt.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +10,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.example.bnt.model.CustomerModel;
+
 @Repository
 public class CustomerRepository {
     @Autowired // Autowired annotation is used here for dependency injection.
     DataSource dataSource;
+
     // This method saves a customer to the database.
     public CustomerModel saveCustomer(CustomerModel customer) {
         if (customer == null) {
@@ -30,6 +33,7 @@ public class CustomerRepository {
         }
         return customer;
     }
+
     // This method retrieves all customers from the database.
     public List<CustomerModel> getCustomer() {
         List<CustomerModel> list = new ArrayList<>();
