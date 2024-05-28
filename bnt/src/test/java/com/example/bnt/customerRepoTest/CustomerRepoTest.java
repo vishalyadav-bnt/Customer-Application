@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.example.bnt.dao.CustomerRepository;
+
 import com.example.bnt.model.CustomerModel;
 
 public class CustomerRepoTest {
@@ -80,15 +81,16 @@ public class CustomerRepoTest {
         List<CustomerModel> result = customerRepository.getCustomer();
         assertIterableEquals(expectedCustomers, result);
     }
-    // @Test
-    // public void testGetCustomer_Nagative() throws SQLException
-    // {
-    // when(dataSourceMock.getConnection()).thenThrow(SQLException.class);
-    // assertThrows(SQLException.class,()->{
-    // customerRepository.getCustomer();
-    // }
-    // );
-    // }
+
+    @Test
+    public void testGetCustomer_Negative_ResponseIsNull() {
+
+        when(customerRepository.getCustomer()).thenThrow(SQLException.class);
+
+        assertThrows(NullPointerException.class, () -> {
+            customerRepository.getCustomer();
+        });
+    }
 
     @Test
     public void testDeleteData() throws SQLException {

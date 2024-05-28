@@ -34,15 +34,13 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testSaveCustomer_Positive() throws ObjectIsNull {
-        // Mocking
-        CustomerModel customer = new CustomerModel(1, "vishal", 120000);
-        when(customerServiceMock.saveCustomer(customer)).thenReturn(customer);
-
-        // Test
-        CustomerModel result = customerController.saveCustomer(customer);
-        assertEquals(customer, result);
+    public void testSaveCustomer_Positive() throws ObjectIsNull{
+        CustomerModel customerModel=new CustomerModel(1,"soham",1234);
+        when(customerServiceMock.saveCustomer(customerModel)).thenReturn(customerModel);
+        CustomerModel customer=customerController.saveCustomer(customerModel);
+        assertEquals(customerModel, customer);
     }
+
 
     @Test
     public void testSaveCustomer_Negative_NullInput() {

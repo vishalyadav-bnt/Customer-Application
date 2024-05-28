@@ -1,25 +1,19 @@
 package com.example.bnt.dao;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.example.bnt.model.CustomerModel;
-
 @Repository
 public class CustomerRepository {
-
-    @Autowired
+    @Autowired // Autowired annotation is used here for dependency injection.
     DataSource dataSource;
-
+    // This method saves a customer to the database.
     public CustomerModel saveCustomer(CustomerModel customer) {
         if (customer == null) {
             throw new NullPointerException("Object is null");
@@ -36,14 +30,14 @@ public class CustomerRepository {
         }
         return customer;
     }
-
+    // This method retrieves all customers from the database.
     public List<CustomerModel> getCustomer() {
         List<CustomerModel> list = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer");
                 ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
-                 CustomerModel customer = new CustomerModel();
+                CustomerModel customer = new CustomerModel();
                 customer.setId(rs.getInt(1));
                 customer.setName(rs.getString(2));
                 customer.setSal(rs.getInt(3));
@@ -54,7 +48,7 @@ public class CustomerRepository {
         }
         return list;
     }
-
+    // This method updates a customer's name based on their ID.
     public CustomerModel updateData(int id, String name) {
         CustomerModel cust = new CustomerModel();
         try (Connection conn = dataSource.getConnection();
@@ -63,7 +57,6 @@ public class CustomerRepository {
             statement.setString(1, name);
             statement.setInt(2, id);
             statement.executeUpdate();
-
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 cust.setId(rs.getInt(1));
@@ -71,11 +64,11 @@ public class CustomerRepository {
                 cust.setSal(rs.getInt(3));
             }
         } catch (Exception e) {
-            System.out.println("Error is"+e);
+            System.out.println("Error is" + e);
         }
         return cust;
     }
-
+    // This method retrieves all customer IDs from the database.
     public List<Integer> getId() {
         List<Integer> list = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
@@ -89,7 +82,7 @@ public class CustomerRepository {
         }
         return list;
     }
-
+    // This method deletes a customer from the database based on their ID.
     public void deleteData(int id) {
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement("DELETE FROM customer WHERE id=?")) {
@@ -99,7 +92,7 @@ public class CustomerRepository {
             e.printStackTrace();
         }
     }
-
+    // This method updates a customer's salary based on their ID.
     public CustomerModel updateSal(int id, int sal) throws SQLException {
         CustomerModel cust = new CustomerModel();
         try (Connection conn = dataSource.getConnection();
