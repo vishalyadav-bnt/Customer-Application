@@ -17,11 +17,13 @@ import com.example.bnt.model.CustomerModel;
 import com.example.bnt.services.CustomerService;
 import java.sql.SQLException;
 import java.util.List;
+
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
     @Autowired // Autowired annotation is used here for dependency injection.
     CustomerService customerservice;
+
     @PostMapping // PostMapping annotation is used for mapping HTTP POST requests onto specific
                  // handler methods.
     public CustomerModel saveCustomer(@RequestBody CustomerModel customer) throws ObjectIsNull {
@@ -31,6 +33,7 @@ public class CustomerController {
         }
         return customerservice.saveCustomer(customer);
     }
+
     @GetMapping // GetMapping annotation is used for mapping HTTP GET requests onto specific
                 // handler methods.
     public List<CustomerModel> getCustomer() throws ObjectIsNull {
@@ -40,6 +43,7 @@ public class CustomerController {
         }
         return customers;
     }
+
     @PutMapping("/{id}") // PutMapping annotation is used for mapping HTTP PUT requests onto specific
                          // handler methods.
     public CustomerModel updateData(@PathVariable("id") int id, @RequestParam("name") String name)
@@ -49,6 +53,7 @@ public class CustomerController {
         }
         return customerservice.updateData(id, name);
     }
+
     @DeleteMapping("/{id}") // DeleteMapping annotation is used for mapping HTTP DELETE requests onto
                             // specific handler methods.
     public ResponseEntity<String> deleteData(@PathVariable("id") int id) throws DataIsNotPresent {
@@ -59,6 +64,7 @@ public class CustomerController {
         return ResponseEntity.ok("Data Are Deleted with " + id);
 
     }
+
     @PatchMapping("/{id}") // PatchMapping annotation is used for mapping HTTP PATCH requests onto specific
                            // handler methods.
     public CustomerModel updateSal(@PathVariable("id") int id, @RequestParam("sal") int sal)

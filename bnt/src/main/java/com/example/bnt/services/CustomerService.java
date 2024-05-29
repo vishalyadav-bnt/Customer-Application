@@ -39,7 +39,7 @@ public class CustomerService {
     // This method deletes a customer's data from the repository.
     public void deleteData(int id) throws DataIsNotPresent {
         if (!customerRepositiory.getId().contains(id)) {
-            throw new DataIsNotPresent("Data Is Not Present");
+            throw new DataIsNotPresent("Data Is Not Present For Delete");
         }
         customerRepositiory.deleteData(id);
     }
