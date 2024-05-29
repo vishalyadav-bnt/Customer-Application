@@ -12,7 +12,7 @@ public class CustomerService {
     @Autowired // Autowired annotation is used here for dependency injection.
     public CustomerRepository customerRepositiory;
     // This method saves a customer to the repository.
-    public CustomerModel saveCustomer(CustomerModel customer) throws ObjectIsNull {
+    public CustomerModel saveCustomer(CustomerModel customer) {
         if (customer == null) {
             throw new ObjectIsNull("The Value Of object is null");
         }
@@ -26,7 +26,7 @@ public class CustomerService {
         return customerRepositiory.getCustomer();
     }
     // This method updates a customer's data in the repository.
-    public CustomerModel updateData(int id, String name) throws DataIsNotPresent {
+    public CustomerModel updateData(int id, String name) {
         if (!customerRepositiory.getId().contains(id)) {
             throw new DataIsNotPresent("Data Is Not Present");
         }
@@ -37,14 +37,14 @@ public class CustomerService {
         return customerRepositiory.getId();
     }
     // This method deletes a customer's data from the repository.
-    public void deleteData(int id) throws DataIsNotPresent {
+    public void deleteData(int id) {
         if (!customerRepositiory.getId().contains(id)) {
             throw new DataIsNotPresent("Data Is Not Present For Delete");
         }
         customerRepositiory.deleteData(id);
     }
     // This method updates a customer's salary in the repository.
-    public CustomerModel updateSal(int id, int sal) throws DataIsNotPresent, SQLException {
+    public CustomerModel updateSal(int id, int sal)throws SQLException {
         if (!customerRepositiory.getId().contains(id)) {
             throw new DataIsNotPresent("The Id Is Not Present");
         }

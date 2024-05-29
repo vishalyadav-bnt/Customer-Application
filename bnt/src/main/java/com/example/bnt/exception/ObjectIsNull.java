@@ -1,9 +1,7 @@
 package com.example.bnt.exception;
 
-public class ObjectIsNull extends Exception {
-    
-
+public class ObjectIsNull extends RuntimeException {
     public ObjectIsNull(String excepMassage) {
-       super("Object Is Null");
+       super(excepMassage);
     }
 }

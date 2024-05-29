@@ -72,7 +72,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testUpdateData_Positive() throws DataIsNotPresent {
+    public void testUpdateData_Positive() throws Exception {
 
         int id = 1;
         String name = "John";
@@ -99,7 +99,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testDeleteData_Positive() throws DataIsNotPresent {
+    public void testDeleteData_Positive() throws Exception {
 
         int id = 1;
         when(customerRepositoryMock.getId()).thenReturn(List.of(id));

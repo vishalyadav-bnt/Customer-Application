@@ -96,7 +96,7 @@ public class CustomerRepoTest {
     //  });
 
 
-    }
+    
     @Test
     public void testDeleteData() throws SQLException {
         int id = 1;

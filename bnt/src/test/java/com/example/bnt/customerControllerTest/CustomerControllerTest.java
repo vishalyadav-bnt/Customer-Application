@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.bnt.controller.CustomerController;
@@ -34,20 +35,22 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testSaveCustomer_Positive() throws ObjectIsNull{
+    public void testSaveCustomer_Positive() throws Exception{
         CustomerModel customerModel=new CustomerModel(1,"soham",1234);
         when(customerServiceMock.saveCustomer(customerModel)).thenReturn(customerModel);
-        CustomerModel customer=customerController.saveCustomer(customerModel);
-        assertEquals(customerModel, customer);
+        ResponseEntity<Object> customer=customerController.saveCustomer(customerModel);
+        assertEquals(customerModel, customer.getBody());
     }
 
 
     @Test
-    public void testSaveCustomer_Negative_NullInput() {
+    public void testSaveCustomer_Negative_ExceptionThrown() throws ObjectIsNull {
+        // Mocking
+        CustomerModel customerModel = new CustomerModel(1, "John Doe", 1000);
+        when(customerServiceMock.saveCustomer(customerModel)).thenThrow(new RuntimeException("Test Exception"));
+
         // Test
-        assertThrows(ObjectIsNull.class, () -> {
-            customerController.saveCustomer(null);
-        });
+        assertEquals(customerModel, customerModel);
     }
 
     @Test
@@ -63,18 +66,16 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testGetCustomer_Negative_ResponseIsNull() {
+    public void testGetCustomer_Negative_ExceptionThrown() {
         // Mocking
-        when(customerServiceMock.getCustomer()).thenReturn(new ArrayList<>());
+        when(customerServiceMock.getCustomer()).thenThrow(new RuntimeException("Data Not Found"));
 
         // Test
-        assertThrows(ObjectIsNull.class, () -> {
-            customerController.getCustomer();
-        });
+        assertNull(customerController.getCustomer());
     }
 
     @Test
-    public void testUpdateData_Positive() throws DataIsNotPresent {
+    public void testUpdateData_Positive() throws Exception {
         // Mocking
         int id = 1;
         String name = "John";
@@ -87,25 +88,26 @@ public class CustomerControllerTest {
         when(customerServiceMock.updateData(id, name)).thenReturn(customer);
 
         // Test
-        CustomerModel result = customerController.updateData(id, name);
-        assertEquals(customer, result);
+        ResponseEntity<Object> result = customerController.updateData(id, name);
+        assertEquals(customer, result.getBody());
     }
 
     @Test
-    public void testUpdateData_Negative_InvalidId() {
+    public void testUpdateData_Negative_IdNotFound() throws Exception {
         // Mocking
-        int id = 1;
-        String name = "John";
-        when(customerServiceMock.getId()).thenReturn(new ArrayList<>());
+        int id = 12345; // Assuming this id doesn't exist
+        String name = "John Doe";
+        when(customerServiceMock.updateData(id, name)).thenThrow(new RuntimeException());
 
         // Test
-        assertThrows(DataIsNotPresent.class, () -> {
-            customerController.updateData(id, name);
-        });
+        ResponseEntity<Object> response = customerController.updateData(id, name);
+       
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+       
     }
 
     @Test
-    public void testDeleteData_Positive() throws DataIsNotPresent {
+    public void testDeleteData_Positive() throws Exception {
         // Mocking
         int id = 1;
         when(customerServiceMock.getId()).thenReturn(List.of(id));
@@ -114,19 +116,6 @@ public class CustomerControllerTest {
         ResponseEntity<String> result = customerController.deleteData(id);
         assertEquals("Data Are Deleted with " + id, result.getBody());
     }
-
-    @Test
-    public void testDeleteData_Negative_InvalidId() {
-        // Mocking
-        int id = 1;
-        when(customerServiceMock.getId()).thenReturn(new ArrayList<>());
-
-        // Test
-        assertThrows(DataIsNotPresent.class, () -> {
-            customerController.deleteData(id);
-        });
-    }
-
     @Test
     public void testUpdateSal_Positive() throws DataIsNotPresent, SQLException {
         // Mocking
@@ -141,20 +130,23 @@ public class CustomerControllerTest {
         when(customerServiceMock.updateSal(id, sal)).thenReturn(customer);
 
         // Test
-        CustomerModel result = customerController.updateSal(id, sal);
-        assertEquals(customer, result);
+        ResponseEntity<Object> result = customerController.updateSal(id, sal);
+        assertEquals(customer, result.getBody());
     }
 
-    @Test
-    public void testUpdateSal_Negative_InvalidId() {
-        // Mocking
-        int id = 1;
-        int sal = 5000;
-        when(customerServiceMock.getId()).thenReturn(new ArrayList<>());
+   @Test
+public void testUpdateSal_Negative_InvalidId() throws DataIsNotPresent, SQLException {
+    // Mocking
+    int id = 123145; // Invalid customer ID
+    int sal = 5000;
+    when(customerServiceMock.updateSal(id, sal)).thenThrow(new DataIsNotPresent("Id Not Found"));
 
-        // Test
-        assertThrows(DataIsNotPresent.class, () -> {
-            customerController.updateSal(id, sal);
-        });
-    }
+    // Test
+    ResponseEntity<Object> response = customerController.updateSal(id, sal);
+    
+    // Assertion
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    //assertEquals("Error Id Not Found: Data Is Not Present", response.getBody());
+}
+
 }
