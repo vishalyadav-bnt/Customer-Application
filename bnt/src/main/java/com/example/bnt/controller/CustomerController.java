@@ -18,40 +18,21 @@ public class CustomerController {
     }
     @GetMapping
     public List<CustomerModel> getCustomer() {
-        try {
             return customerservice.getCustomer();
-        } catch (Exception e) {
-            return null;
-        }
     }
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateData(@PathVariable("id") int id, @RequestParam("name") String name) {
-        try {
             CustomerModel customerModel = customerservice.updateData(id, name);
             return ResponseEntity.ok(customerModel);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Customer Id" + id + " not found." + e.getMessage());
-        }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteData(@PathVariable("id") int id) {
-        try {
             customerservice.deleteData(id);
             return ResponseEntity.ok("Data Are Deleted with " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error Id " + id + " Not Found " + e.getMessage());
-        }
     }
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateSal(@PathVariable("id") int id, @RequestParam("sal") int sal) {
-        try {
             CustomerModel cust = customerservice.updateSal(id, sal);
             return ResponseEntity.ok(cust);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error Id " + id + " Not Found" + e.getMessage());
-        }
     }
 }

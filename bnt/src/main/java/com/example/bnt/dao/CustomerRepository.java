@@ -1,16 +1,13 @@
 package com.example.bnt.dao;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.example.bnt.model.CustomerModel;
-
 @Repository
 public class CustomerRepository {
     @Autowired // Autowired annotation is used here for dependency injection.
@@ -33,7 +30,6 @@ public class CustomerRepository {
         }
         return customer;
     }
-
     // This method retrieves all customers from the database.
     public List<CustomerModel> getCustomer() {
         List<CustomerModel> list = new ArrayList<>();
@@ -97,7 +93,7 @@ public class CustomerRepository {
         }
     }
     // This method updates a customer's salary based on their ID.
-    public CustomerModel updateSal(int id, int sal) throws SQLException {
+    public CustomerModel updateSal(int id, int sal) {
         CustomerModel cust = new CustomerModel();
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement("update customer set sal=? where id=?");
@@ -116,5 +112,4 @@ public class CustomerRepository {
         }
         return cust;
     }
-
 }
