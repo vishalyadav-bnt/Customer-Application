@@ -8,7 +8,6 @@ import com.example.bnt.exception.ObjectIsNull;
 import com.example.bnt.model.CustomerModel;
 @Service
 public class CustomerService {
-  
     @Autowired // Autowired annotation is used here for dependency injection.
     public CustomerRepository customerRepositiory;
     // This method saves a customer to the repository.

@@ -12,7 +12,6 @@ import com.example.bnt.model.CustomerModel;
 public class CustomerRepository {
     @Autowired // Autowired annotation is used here for dependency injection.
     DataSource dataSource;
-
     // This method saves a customer to the database.
     public CustomerModel saveCustomer(CustomerModel customer) {
         if (customer == null) {
