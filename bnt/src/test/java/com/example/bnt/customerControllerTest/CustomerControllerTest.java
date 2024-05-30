@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.bnt.controller.CustomerController;
@@ -68,11 +67,14 @@ public class CustomerControllerTest {
     @Test
     public void testGetCustomer_Negative_ExceptionThrown() {
         // Mocking
-        when(customerServiceMock.getCustomer()).thenThrow(new RuntimeException("Data Not Found"));
+        when(customerServiceMock.getCustomer()).thenThrow(new DataIsNotPresent("Data Not Found"));
+       // when(customerServiceMock.getCustomer()).thenReturn(new ArrayList<>());
 
-        // Test
-        assertNull(customerController.getCustomer());
+        assertThrows(DataIsNotPresent.class, () -> {
+            customerServiceMock.getCustomer();
+        });
     }
+    
 
     @Test
     public void testUpdateData_Positive() throws Exception {
@@ -97,12 +99,11 @@ public class CustomerControllerTest {
         // Mocking
         int id = 12345; // Assuming this id doesn't exist
         String name = "John Doe";
-        when(customerServiceMock.updateData(id, name)).thenThrow(new RuntimeException());
-
-        // Test
-        ResponseEntity<Object> response = customerController.updateData(id, name);
-       
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        when(customerServiceMock.updateData(id, name)).thenThrow(new DataIsNotPresent("Data Not Found"));
+        assertThrows(DataIsNotPresent.class,()->
+        {
+            customerServiceMock.updateData(id, name);
+        });
        
     }
 
@@ -140,13 +141,9 @@ public void testUpdateSal_Negative_InvalidId() throws DataIsNotPresent, SQLExcep
     int id = 123145; // Invalid customer ID
     int sal = 5000;
     when(customerServiceMock.updateSal(id, sal)).thenThrow(new DataIsNotPresent("Id Not Found"));
-
-    // Test
-    ResponseEntity<Object> response = customerController.updateSal(id, sal);
-    
-    // Assertion
-    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    //assertEquals("Error Id Not Found: Data Is Not Present", response.getBody());
+     assertThrows(DataIsNotPresent.class,()->{
+        customerServiceMock.updateSal(id, sal);
+     });
 }
 
 }

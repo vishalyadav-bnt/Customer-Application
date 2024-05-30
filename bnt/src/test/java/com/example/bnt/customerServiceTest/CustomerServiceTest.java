@@ -66,7 +66,7 @@ public class CustomerServiceTest {
 
         when(customerRepositoryMock.getCustomer()).thenReturn(new ArrayList<>());
 
-        assertThrows(UnsupportedOperationException.class, () -> {
+        assertThrows(DataIsNotPresent.class, () -> {
             customerService.getCustomer();
         });
     }
